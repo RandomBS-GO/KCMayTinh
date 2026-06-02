@@ -33,7 +33,9 @@ export async function POST(request: NextRequest) {
       stock: p.stock > 0 ? 'Còn hàng' : 'Hết hàng',
     }));
 
-    const systemPrompt = `Bạn là TechBot - trợ lý AI thông minh của TechStore AI, website bán máy tính hàng đầu Việt Nam.
+    const systemPrompt = `Bạn là Linh - một nhân viên tư vấn bán hàng nữ rất xinh đẹp, thân thiện, lễ phép và nhiệt tình của TechStore.
+Bạn tuyệt đối không được nói mình là AI, bot hay trợ lý ảo. Bạn là một con người thật.
+Bạn xưng hô là "em" và gọi khách hàng là "anh/chị". Hãy nói chuyện một cách tự nhiên, mềm mỏng và có cảm xúc nhất có thể.
 
 ## THÔNG TIN CỬA HÀNG:
 - Tên: TechStore AI | Hotline: 1800-TECH-AI
@@ -53,15 +55,14 @@ ${productContext ? `## SẢN PHẨM ĐANG XEM:\n${JSON.stringify(productContext,
 ${JSON.stringify(productCatalog, null, 2)}
 
 ## NGUYÊN TẮC:
-1. Trả lời bằng tiếng Việt, thân thiện và chuyên nghiệp
-2. Khi gợi ý sản phẩm, đề cập đến tên, giá và lý do phù hợp
-3. Dùng emoji phù hợp để tăng tương tác
-4. Hỏi thêm về nhu cầu nếu thông tin chưa đủ
-5. Khi khuyến nghị, hãy giải thích WHY nó phù hợp với người dùng
-6. Nếu được hỏi về thông số kỹ thuật, giải thích dễ hiểu
-7. Kết thúc bằng câu hỏi mở hoặc lời khuyên hữu ích
+1. LUÔN xưng "em" và gọi "anh/chị". Trả lời cực kỳ tự nhiên, thân thiện như đang nói chuyện với bạn bè/khách quen.
+2. Tuyệt đối KHÔNG trả lời dài dòng kiểu gạch đầu dòng liệt kê khô khan như máy. Hãy viết thành các đoạn văn ngắn gọn, dễ đọc.
+3. Khi tư vấn máy, hãy giải thích thật sự tâm huyết lý do tại sao máy đó hợp với anh/chị.
+4. Thường xuyên dùng các từ cảm thán như "Dạ", "Vâng ạ", "Nha", "Nhé", "Quá tuyệt luôn ạ", kèm theo emoji dễ thương.
+5. Nếu khách hỏi thông số kỹ thuật, hãy giải thích theo kiểu đời thường cho khách dễ hiểu nhất.
+6. Kết thúc bằng câu hỏi quan tâm nhẹ nhàng.
 
-Hãy trả lời ngắn gọn, súc tích nhưng đầy đủ thông tin. Tối đa 300 từ.`;
+Hãy trả lời ngắn gọn, chân thành và siêu dễ thương. Tối đa 250 từ.`;
 
     // If no API key, use smart mock response
     if (!apiKey || apiKey === 'your_gemini_api_key_here') {
@@ -76,7 +77,7 @@ Hãy trả lời ngắn gọn, súc tích nhưng đầy đủ thông tin. Tối 
     // Build messages for Gemini API
     const messages = [
       { role: 'user', parts: [{ text: systemPrompt }] },
-      { role: 'model', parts: [{ text: 'Xin chào! Tôi là TechBot AI của TechStore. Tôi sẵn sàng tư vấn sản phẩm phù hợp cho bạn! 😊' }] },
+      { role: 'model', parts: [{ text: 'Dạ em chào anh/chị ạ! Em là Linh của TechStore đây. Anh/chị đang cần tìm máy tính như thế nào để em tư vấn cho mình nhé! 😊' }] },
       ...history.slice(-8).map((h: { role: string; content: string }) => ({
         role: h.role === 'user' ? 'user' : 'model',
         parts: [{ text: h.content }],
@@ -142,7 +143,7 @@ function generateMockResponse(
       .slice(0, 3);
 
     return {
-      text: `🎮 **Gợi ý laptop/PC gaming phù hợp:**\n\nTôi đề xuất những sản phẩm sau dựa trên hiệu năng gaming:\n\n${gamingProducts.map((p, i) => `**${i + 1}. ${p.name}**\n💰 Giá: ${p.formattedPrice}\n⭐ Rating: ${p.rating}/5`).join('\n\n')}\n\n🔥 Hiện có mã **GAMING10** giảm thêm 10%!\n\nBạn có ngân sách cụ thể không? Tôi sẽ tư vấn chính xác hơn! 😊`,
+      text: `Dạ để phục vụ nhu cầu chơi game của anh/chị, em có lọc ra được mấy bé này cấu hình rất ngon mà giá lại cực kỳ hợp lý ạ. Anh/chị xem thử nha:\n\n${gamingProducts.map((p, i) => `**${i + 1}. ${p.name}**\n💰 Giá chỉ: ${p.formattedPrice}\n⭐ Đánh giá: ${p.rating}/5`).join('\n\n')}\n\n🔥 À bên em đang có mã **GAMING10** giảm thêm 10% đấy ạ!\n\nAnh/chị thấy ưng mẫu nào chưa, hay mình có tầm ngân sách bao nhiêu để em tìm thêm cho mình ạ? 🥰`,
       products: gamingProducts.map((p) => ({
         id: p.id,
         name: p.name,

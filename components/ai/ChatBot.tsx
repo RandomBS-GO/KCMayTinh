@@ -22,15 +22,10 @@ const QUICK_QUESTIONS = [
 const WELCOME_MESSAGE: ChatMessage = {
   id: 'welcome',
   role: 'assistant',
-  content: `Xin chào! 👋 Tôi là **TechBot** - trợ lý AI của TechStore AI.
-
-Tôi có thể giúp bạn:
-🔍 **Tư vấn** máy tính phù hợp nhu cầu
-💰 **Tìm kiếm** trong tầm giá của bạn
-📊 **So sánh** cấu hình các sản phẩm
-🛒 **Hướng dẫn** quy trình mua hàng
-
-Bạn đang tìm gì? Cho tôi biết nhu cầu và ngân sách nhé! 😊`,
+  content: `Dạ em chào anh/chị ạ! 👋 Em là **Linh** - Nhân viên tư vấn của TechStore.
+  
+Anh/chị đang có nhu cầu tìm mua máy tính để học tập, làm việc hay chơi game ạ? 
+Anh/chị cứ thoải mái chia sẻ nhu cầu và mức tài chính mong muốn, em sẽ rà soát kho hàng và tư vấn cho mình những mẫu máy phù hợp nhất và tiết kiệm nhất nhé! 😊`,
   timestamp: new Date(),
 };
 
@@ -150,8 +145,8 @@ export default function ChatBot({ productContext }: ChatBotProps) {
             <span className="absolute inset-0 rounded-2xl bg-cyan-500/30 animate-pulse-ring" />
             <span className="absolute inset-0 rounded-2xl bg-cyan-500/20 animate-pulse-ring" style={{ animationDelay: '0.5s' }} />
 
-            <span className="text-2xl group-hover:animate-bounce-subtle">🤖</span>
-            <span className="text-[9px] text-white/80 font-medium tracking-wide">AI TƯ VẤN</span>
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=100&auto=format&fit=crop" alt="Agent" className="w-8 h-8 rounded-full object-cover group-hover:animate-bounce-subtle border-2 border-cyan-400" />
+            <span className="text-[9px] text-white/80 font-medium tracking-wide mt-1">HỖ TRỢ</span>
           </motion.button>
         )}
       </AnimatePresence>
@@ -175,13 +170,13 @@ export default function ChatBot({ productContext }: ChatBotProps) {
             {/* Chat Header */}
             <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-cyan-600/20 to-blue-600/20 border-b border-dark-700 flex-shrink-0">
               <div className="relative">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-xl shadow-glow-sm">
-                  🤖
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-glow-sm overflow-hidden p-0.5">
+                  <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=100&auto=format&fit=crop" alt="Agent" className="w-full h-full rounded-[10px] object-cover" />
                 </div>
                 <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 border-2 border-dark-900 rounded-full" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-display font-bold text-sm text-slate-100">TechBot AI</h3>
+                <h3 className="font-display font-bold text-sm text-slate-100">Tư vấn viên - Linh</h3>
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
                   <span className="text-xs text-emerald-400">Đang hoạt động</span>
@@ -222,10 +217,10 @@ export default function ChatBot({ productContext }: ChatBotProps) {
                       {/* Avatar */}
                       <div className={`w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center text-sm ${
                         msg.role === 'assistant'
-                          ? 'bg-gradient-to-br from-cyan-500 to-blue-600 shadow-glow-sm'
+                          ? 'bg-gradient-to-br from-cyan-500 to-blue-600 shadow-glow-sm overflow-hidden p-[1px]'
                           : 'bg-dark-700'
                       }`}>
-                        {msg.role === 'assistant' ? '🤖' : <User className="w-4 h-4 text-slate-400" />}
+                        {msg.role === 'assistant' ? <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=100&auto=format&fit=crop" alt="Agent" className="w-full h-full rounded-md object-cover" /> : <User className="w-4 h-4 text-slate-400" />}
                       </div>
 
                       {/* Bubble */}
@@ -297,8 +292,8 @@ export default function ChatBot({ productContext }: ChatBotProps) {
                         exit={{ opacity: 0 }}
                         className="flex gap-2.5"
                       >
-                        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-sm">
-                          🤖
+                        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-sm overflow-hidden p-[1px]">
+                          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=100&auto=format&fit=crop" alt="Agent" className="w-full h-full rounded-md object-cover" />
                         </div>
                         <div className="bg-dark-800 border border-dark-600 rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-1">
                           {[0, 1, 2].map((i) => (
