@@ -121,7 +121,7 @@ Hãy trả lời ngắn gọn, chân thành và siêu dễ thương. Tối đa 2
     console.error('AI Chat error:', error);
     return NextResponse.json({
       success: true,
-      response: '⚠️ Tôi đang gặp sự cố kết nối AI. Trong lúc chờ, bạn có thể:\n\n📞 Gọi hotline **1800-TECH-AI** (miễn phí)\n💬 Chat Zalo: **TechStore AI**\n\nHoặc thử lại sau ít phút!',
+      response: '⚠️ Dạ hiện tại hệ thống AI của em đang bị quá tải hoặc mất kết nối. Anh/chị thông cảm giúp em nha!\n\nTrong lúc chờ đợi, anh/chị có thể:\n📞 Gọi hotline **1800-TECH-AI** (miễn phí)\n💬 Chat Zalo: **TechStore AI**\n\nHoặc anh/chị thử chat lại với em sau ít phút nhé! 🥰',
     });
   }
 }
