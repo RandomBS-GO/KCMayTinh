@@ -1,0 +1,104 @@
+{
+  "name": "TechStore AI – Main Workflow",
+  "nodes": [
+    {
+      "id": "webhook-new-order",
+      "name": "Nhận Đơn Hàng Mới",
+      "type": "n8n-nodes-base.webhook",
+      "position": [240, 300],
+      "parameters": {
+        "path": "techstore/new-order",
+        "responseMode": "onReceived",
+        "responseData": "{ \"success\": true, \"message\": \"Đã nhận đơn hàng\" }"
+      }
+    },
+    {
+      "id": "send-confirm-email",
+      "name": "Gửi Email Xác Nhận",
+      "type": "n8n-nodes-base.gmail",
+      "position": [460, 300],
+      "parameters": {
+        "operation": "send",
+        "to": "={{ $json.customer.email }}",
+        "subject": "🎉 Xác nhận đơn hàng {{ $json.orderNumber }} – TechStore AI",
+        "html": "<h2>Xin chào {{ $json.customer.name }}!</h2><p>Đơn hàng <strong>{{ $json.orderNumber }}</strong> đã được xác nhận.</p><p>Tổng tiền: <strong>{{ $json.total }}</strong> VND</p><p>Chúng tôi sẽ liên hệ trong 30 phút!</p><p>Hotline: 1800-TECH-AI</p>"
+      }
+    },
+    {
+      "id": "webhook-ai-chat",
+      "name": "AI Chat Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "position": [240, 500],
+      "parameters": {
+        "path": "techstore/ai-chat",
+        "responseMode": "lastNode"
+      }
+    },
+    {
+      "id": "call-gemini-ai",
+      "name": "Gọi Gemini AI",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [460, 500],
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={{ $env.GEMINI_API_KEY }}",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "contents",
+              "value": "=[{ \"role\": \"user\", \"parts\": [{ \"text\": \"{{ $json.message }}\" }] }]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "return-ai-response",
+      "name": "Trả Về Kết Quả AI",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [680, 500],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: true, response: $json.candidates[0].content.parts[0].text }) }}"
+      }
+    },
+    {
+      "id": "webhook-newsletter",
+      "name": "Đăng Ký Newsletter",
+      "type": "n8n-nodes-base.webhook",
+      "position": [240, 700],
+      "parameters": {
+        "path": "techstore/newsletter"
+      }
+    },
+    {
+      "id": "save-subscriber",
+      "name": "Lưu Người Đăng Ký",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [460, 700],
+      "parameters": {
+        "operation": "append",
+        "documentId": "YOUR_GOOGLE_SHEET_ID",
+        "sheetName": "Subscribers",
+        "dataMode": "autoMapInputData"
+      }
+    }
+  ],
+  "connections": {
+    "Nhận Đơn Hàng Mới": {
+      "main": [[{ "node": "Gửi Email Xác Nhận", "type": "main", "index": 0 }]]
+    },
+    "AI Chat Webhook": {
+      "main": [[{ "node": "Gọi Gemini AI", "type": "main", "index": 0 }]]
+    },
+    "Gọi Gemini AI": {
+      "main": [[{ "node": "Trả Về Kết Quả AI", "type": "main", "index": 0 }]]
+    },
+    "Đăng Ký Newsletter": {
+      "main": [[{ "node": "Lưu Người Đăng Ký", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

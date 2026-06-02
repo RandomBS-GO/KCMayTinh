@@ -1,0 +1,482 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========================================
+   BASE STYLES
+======================================== */
+:root {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-card: #1e293b;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --accent-cyan: #06b6d4;
+  --accent-blue: #3b82f6;
+  --accent-purple: #8b5cf6;
+  --border: rgba(148, 163, 184, 0.1);
+  --gradient-start: #06b6d4;
+  --gradient-end: #3b82f6;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0f172a;
+  color: #f1f5f9;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ========================================
+   SCROLLBAR
+======================================== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #06b6d4;
+}
+
+/* ========================================
+   SELECTION
+======================================== */
+::selection {
+  background: rgba(6, 182, 212, 0.3);
+  color: #f1f5f9;
+}
+
+/* ========================================
+   COMPONENT LAYER
+======================================== */
+@layer components {
+
+  /* ---- BUTTONS ---- */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 
+           bg-gradient-to-r from-cyan-500 to-blue-600 
+           text-white font-semibold rounded-xl
+           hover:from-cyan-400 hover:to-blue-500
+           transition-all duration-300 
+           shadow-glow hover:shadow-glow-lg
+           active:scale-95 select-none cursor-pointer;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 
+           bg-dark-800 border border-dark-600
+           text-slate-200 font-semibold rounded-xl
+           hover:bg-dark-700 hover:border-cyan-500/50
+           transition-all duration-300
+           active:scale-95 select-none cursor-pointer;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 
+           border border-cyan-500/50 
+           text-cyan-400 font-semibold rounded-xl
+           hover:bg-cyan-500/10 hover:border-cyan-400
+           transition-all duration-300
+           active:scale-95 select-none cursor-pointer;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 
+           text-slate-400 font-medium rounded-lg
+           hover:text-slate-200 hover:bg-dark-700
+           transition-all duration-200
+           active:scale-95 select-none cursor-pointer;
+  }
+
+  .btn-sm {
+    @apply px-4 py-2 text-sm rounded-lg;
+  }
+
+  .btn-lg {
+    @apply px-8 py-4 text-lg rounded-2xl;
+  }
+
+  /* ---- CARDS ---- */
+  .card {
+    @apply bg-dark-800/80 border border-dark-600/50 rounded-2xl
+           backdrop-blur-sm;
+  }
+
+  .card-hover {
+    @apply card transition-all duration-300
+           hover:border-cyan-500/30 hover:shadow-card-hover
+           hover:-translate-y-1;
+  }
+
+  .glass-card {
+    @apply bg-white/5 border border-white/10 rounded-2xl
+           backdrop-blur-md;
+  }
+
+  /* ---- INPUTS ---- */
+  .input {
+    @apply w-full px-4 py-3 
+           bg-dark-800 border border-dark-600
+           text-slate-200 placeholder-slate-500
+           rounded-xl outline-none
+           focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20
+           transition-all duration-200;
+  }
+
+  .input-sm {
+    @apply px-3 py-2 text-sm rounded-lg;
+  }
+
+  /* ---- BADGES ---- */
+  .badge {
+    @apply inline-flex items-center gap-1 px-3 py-1 
+           rounded-full text-xs font-semibold;
+  }
+
+  .badge-cyan {
+    @apply badge bg-cyan-500/20 text-cyan-400 border border-cyan-500/30;
+  }
+
+  .badge-blue {
+    @apply badge bg-blue-500/20 text-blue-400 border border-blue-500/30;
+  }
+
+  .badge-green {
+    @apply badge bg-emerald-500/20 text-emerald-400 border border-emerald-500/30;
+  }
+
+  .badge-orange {
+    @apply badge bg-orange-500/20 text-orange-400 border border-orange-500/30;
+  }
+
+  .badge-red {
+    @apply badge bg-red-500/20 text-red-400 border border-red-500/30;
+  }
+
+  .badge-purple {
+    @apply badge bg-purple-500/20 text-purple-400 border border-purple-500/30;
+  }
+
+  /* ---- GRADIENT TEXT ---- */
+  .gradient-text {
+    @apply bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 
+           bg-clip-text text-transparent;
+  }
+
+  .gradient-text-cyan {
+    @apply bg-gradient-to-r from-cyan-400 to-blue-500
+           bg-clip-text text-transparent;
+  }
+
+  /* ---- SECTION ---- */
+  .section {
+    @apply py-16 px-4 md:px-6 lg:px-8;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto;
+  }
+
+  /* ---- PRODUCT CARD ---- */
+  .product-card {
+    @apply card-hover overflow-hidden cursor-pointer;
+  }
+
+  .product-card-image {
+    @apply w-full aspect-[4/3] object-contain p-4 
+           transition-transform duration-500 group-hover:scale-105;
+  }
+
+  /* ---- LOADING SKELETON ---- */
+  .skeleton {
+    @apply bg-dark-700 rounded-lg animate-pulse;
+    background: linear-gradient(
+      90deg,
+      #1e293b 25%,
+      #273549 50%,
+      #1e293b 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  /* ---- DIVIDER ---- */
+  .divider {
+    @apply border-t border-dark-700;
+  }
+
+  /* ---- SECTION TITLE ---- */
+  .section-title {
+    @apply font-display text-3xl md:text-4xl font-bold text-slate-100;
+  }
+
+  .section-subtitle {
+    @apply text-slate-400 text-lg mt-3;
+  }
+}
+
+/* ========================================
+   UTILITIES
+======================================== */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Noise texture overlay */
+  .noise::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  /* Grid pattern background */
+  .grid-bg {
+    background-image: 
+      linear-gradient(rgba(6,182,212,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(6,182,212,0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Dot pattern */
+  .dot-bg {
+    background-image: radial-gradient(circle, rgba(6,182,212,0.15) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+}
+
+/* ========================================
+   ANIMATIONS
+======================================== */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 1.5s ease-out infinite;
+}
+
+/* ========================================
+   CHAT WIDGET
+======================================== */
+.chat-widget {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+}
+
+.chat-bubble {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.chat-bubble:hover {
+  transform: scale(1.1);
+}
+
+/* ========================================
+   PRODUCT IMAGE WRAPPER
+======================================== */
+.product-image-wrapper {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.product-image-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(6,182,212,0.05) 0%, transparent 70%);
+}
+
+/* ========================================
+   HERO PARTICLES
+======================================== */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  animation: float linear infinite;
+  pointer-events: none;
+}
+
+/* ========================================
+   SWIPER CUSTOMIZATION
+======================================== */
+.swiper-pagination-bullet {
+  background: #475569 !important;
+  opacity: 1 !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #06b6d4 !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #06b6d4 !important;
+  background: rgba(30, 41, 59, 0.8);
+  border-radius: 50%;
+  width: 44px !important;
+  height: 44px !important;
+  border: 1px solid rgba(6, 182, 212, 0.3);
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 16px !important;
+}
+
+/* ========================================
+   PRICE TAG
+======================================== */
+.price-tag {
+  @apply font-display font-bold;
+  background: linear-gradient(135deg, #22d3ee, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ========================================
+   RATING STARS
+======================================== */
+.star-filled {
+  color: #fbbf24;
+}
+
+.star-empty {
+  color: #334155;
+}
+
+/* ========================================
+   TABLE
+======================================== */
+.data-table th {
+  @apply text-left text-xs font-semibold text-slate-400 uppercase tracking-wider
+         px-4 py-3 bg-dark-900/50;
+}
+
+.data-table td {
+  @apply px-4 py-3 text-slate-300 border-b border-dark-700/50;
+}
+
+.data-table tr:hover td {
+  @apply bg-dark-700/30;
+}
+
+/* ========================================
+   MOBILE RESPONSIVE FIXES
+======================================== */
+@media (max-width: 768px) {
+  .section {
+    @apply py-12;
+  }
+
+  .section-title {
+    @apply text-2xl;
+  }
+
+  .btn-primary, .btn-secondary {
+    @apply px-5 py-3;
+  }
+}
+
+/* ========================================
+   COMPARE TABLE
+======================================== */
+.compare-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.compare-table th {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  padding: 16px;
+  text-align: center;
+  border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+}
+
+.compare-table td {
+  padding: 12px 16px;
+  text-align: center;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+  color: #cbd5e1;
+}
+
+.compare-table tr:hover td {
+  background: rgba(6, 182, 212, 0.05);
+}
+
+/* ========================================
+   TOAST
+======================================== */
+.toast-custom {
+  background: #1e293b !important;
+  border: 1px solid rgba(6, 182, 212, 0.3) !important;
+  color: #f1f5f9 !important;
+  border-radius: 12px !important;
+}
