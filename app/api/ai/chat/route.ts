@@ -74,14 +74,19 @@ Hãy trả lời ngắn gọn, chân thành và siêu dễ thương. Tối đa 2
       });
     }
 
-    // Build messages for Gemini API
-    const messages = [
-      { role: 'user', parts: [{ text: systemPrompt }] },
-      { role: 'model', parts: [{ text: 'Dạ em chào anh/chị ạ! Em là Linh của TechStore đây. Anh/chị đang cần tìm máy tính như thế nào để em tư vấn cho mình nhé! 😊' }] },
-      ...history.slice(-8).map((h: { role: string; content: string }) => ({
+    // Filter out the initial welcome message from history to prevent consecutive 'model' messages
+    const validHistory = history
+      .filter((h: any) => h.content && !h.content.includes('Linh của TechStore') && !h.content.includes('Linh** - Nhân viên tư vấn'))
+      .map((h: { role: string; content: string }) => ({
         role: h.role === 'user' ? 'user' : 'model',
         parts: [{ text: h.content }],
-      })),
+      }));
+
+    // Build strictly alternating messages for Gemini API
+    const messages = [
+      { role: 'user', parts: [{ text: systemPrompt + '\n\n---\nKhách hàng: Chào shop' }] },
+      { role: 'model', parts: [{ text: 'Dạ em chào anh/chị ạ! Em là Linh của TechStore đây. Anh/chị đang cần tìm máy tính như thế nào để em tư vấn cho mình nhé! 😊' }] },
+      ...validHistory.slice(-6),
       { role: 'user', parts: [{ text: message }] },
     ];
 
