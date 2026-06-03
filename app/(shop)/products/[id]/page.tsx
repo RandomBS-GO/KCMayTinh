@@ -104,6 +104,7 @@ export default function ProductDetailPage() {
               <img
                 src={images[selectedImage]}
                 alt={product.name}
+                referrerPolicy="no-referrer"
                 className="w-full h-full object-contain p-8"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = `https://placehold.co/600x450/1e293b/94a3b8?text=${encodeURIComponent(product.brand)}`;
@@ -149,7 +150,7 @@ export default function ProductDetailPage() {
                       selectedImage === i ? 'border-cyan-500 shadow-glow-sm' : 'border-transparent hover:border-dark-500'
                     }`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-contain p-2"
+                    <img src={img} alt="" className="w-full h-full object-contain p-2" referrerPolicy="no-referrer"
                       onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/80x80/1e293b/94a3b8?text=IMG'; }}
                     />
                   </button>

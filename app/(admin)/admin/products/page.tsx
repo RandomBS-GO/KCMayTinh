@@ -204,6 +204,7 @@ export default function AdminProductsPage() {
                           <img 
                             src={product.thumbnail} 
                             alt={product.name}
+                            referrerPolicy="no-referrer"
                             className="w-full h-full object-contain p-1"
                             onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/40x40/1e293b/94a3b8?text=IMG'; }}
                           />

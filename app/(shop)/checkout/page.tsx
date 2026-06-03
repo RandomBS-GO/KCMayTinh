@@ -378,6 +378,7 @@ export default function CheckoutPage() {
                   <div key={item.product._id} className="flex gap-3">
                     <div className="w-16 h-16 product-image-wrapper rounded-lg flex-shrink-0">
                       <img src={item.product.thumbnail} alt={item.product.name}
+                        referrerPolicy="no-referrer"
                         className="w-full h-full object-contain p-1"
                         onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/64x64/1e293b/94a3b8?text=IMG'; }}
                       />

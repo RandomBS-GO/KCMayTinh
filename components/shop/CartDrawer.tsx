@@ -94,6 +94,7 @@ export default function CartDrawer() {
                         <img
                           src={item.product.thumbnail}
                           alt={item.product.name}
+                          referrerPolicy="no-referrer"
                           className="w-full h-full object-contain p-1"
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = 'https://placehold.co/80x80/1e293b/94a3b8?text=IMG';

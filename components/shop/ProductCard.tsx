@@ -37,6 +37,7 @@ export default function ProductCard({ product, variant = 'default', className }:
             <img
               src={product.thumbnail}
               alt={product.name}
+              referrerPolicy="no-referrer"
               className="w-full h-full object-contain p-1"
               onError={(e) => {
                 (e.target as HTMLImageElement).src = 'https://placehold.co/64x64/1e293b/94a3b8?text=IMG';
@@ -101,6 +102,7 @@ export default function ProductCard({ product, variant = 'default', className }:
           <img
             src={product.thumbnail}
             alt={product.name}
+            referrerPolicy="no-referrer"
             className="w-full h-full object-contain p-4 product-card-image transition-transform duration-500 group-hover:scale-105"
             onError={(e) => {
               (e.target as HTMLImageElement).src = `https://placehold.co/400x300/1e293b/94a3b8?text=${encodeURIComponent(product.brand)}`;

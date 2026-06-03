@@ -161,7 +161,7 @@ export default function HeroSection() {
                       <p className="text-xs text-dark-600 line-through">36.9 triệu</p>
                     </div>
                   </div>
-                  <Link href="/products/l1" className="btn-primary w-full justify-center gap-2 text-sm">
+                  <Link href="/products/1" className="btn-primary w-full justify-center gap-2 text-sm">
                     <Zap className="w-4 h-4" />
                     Xem chi tiết
                   </Link>

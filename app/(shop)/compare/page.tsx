@@ -86,6 +86,7 @@ export default function ComparePage() {
                         <img 
                           src={product.thumbnail} 
                           alt={product.name} 
+                          referrerPolicy="no-referrer"
                           className="w-full h-full object-contain p-2"
                         />
                       </div>

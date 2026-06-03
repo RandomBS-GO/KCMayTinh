@@ -260,6 +260,7 @@ export default function ChatBot({ productContext }: ChatBotProps) {
                                   <img
                                     src={card.image}
                                     alt={card.name}
+                                    referrerPolicy="no-referrer"
                                     className="w-full h-full object-contain p-1"
                                     onError={(e) => {
                                       (e.target as HTMLImageElement).src = 'https://placehold.co/48x48/1e293b/94a3b8?text=IMG';

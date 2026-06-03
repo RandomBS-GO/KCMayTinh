@@ -36,6 +36,7 @@ export default function CompareBar() {
                     <img
                       src={product.thumbnail}
                       alt={product.name}
+                      referrerPolicy="no-referrer"
                       className="w-10 h-10 object-contain flex-shrink-0"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = 'https://placehold.co/40x40/1e293b/94a3b8?text=IMG';
