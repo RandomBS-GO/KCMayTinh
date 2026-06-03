@@ -18,12 +18,16 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       const res = await signIn("credentials", { email, password, redirect: false });
+      alert("SignIn Response: " + JSON.stringify(res));
+      
       if (res?.error) {
         toast.error(res.error);
-      } else {
+      } else if (res?.ok) {
         toast.success("Đăng nhập thành công!");
         router.push("/");
         router.refresh();
+      } else {
+        toast.error("Không nhận được phản hồi hợp lệ từ server.");
       }
     } catch {
       toast.error("Đã xảy ra lỗi. Vui lòng thử lại.");
