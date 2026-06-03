@@ -8,57 +8,52 @@ import { ALL_PRODUCTS } from '@/lib/products-data';
 // Map of real product image placeholders by brand/category
 const BRAND_IMAGES: Record<string, string[]> = {
   'ASUS_laptop': [
-    'https://dlcdnwebimgs.asus.com/gain/97E259EB-41BD-4428-AB01-B73307BCF5A0/w240/h175',
-    'https://dlcdnwebimgs.asus.com/gain/D20D64EA-E526-4EDC-A20D-1BFE9D4AECE8/w240/h175'
+    'https://cdn.dummyjson.com/product-images/laptops/asus-zenbook-pro-dual-screen-laptop/thumbnail.webp'
   ],
   'MSI_laptop': [
-    'https://asset.msi.com/resize/image/global/product/product_16727282216fdffb272337d110f96894da066b1d4e.png62405b38c58fe0f07fcef2367d8a9ba1/400.png',
-    'https://asset.msi.com/resize/image/global/product/product_1642491176bc5a58fa49d63c469b27521ab299ebf4.png62405b38c58fe0f07fcef2367d8a9ba1/400.png'
+    'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=500'
   ],
   'Lenovo_laptop': [
-    'https://p3-ofp.static.pub//fes/cms/2023/12/15/4xydy4ep233tyff9v1q6mnh223n09a473215.png',
-    'https://p3-ofp.static.pub/ShareResource/na/products/legion/400x300/lenovo-legion-pro-7-gen-8-16-inch-amd.png'
+    'https://cdn.dummyjson.com/product-images/laptops/lenovo-yoga-920/thumbnail.webp'
   ],
   'Acer_laptop': [
-    'https://images.acer.com/is/image/acer/Predator-Helios-18-PH18-71-AG-Black-01a-1?$Product-Cards-XL$',
-    'https://images.acer.com/is/image/acer/Predator-Helios-Neo-16-PHN16-72-Black-01a-1?$Product-Cards-XL$'
+    'https://cdn.dummyjson.com/product-images/laptops/huawei-matebook-x-pro/thumbnail.webp'
   ],
   'Dell_laptop': [
-    'https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/alienware-notebooks/alienware-m18-r2/media-gallery/awm18-r2-black-gallery-3.png?fmt=png-alpha&wid=800&hei=600',
-    'https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/alienware-notebooks/alienware-x16-r2/media-gallery/awx16-r2-lunar-silver-gallery-1.png?fmt=png-alpha&wid=800&hei=600'
+    'https://cdn.dummyjson.com/product-images/laptops/new-dell-xps-13-9300-laptop/thumbnail.webp'
   ],
   'Apple_laptop': [
-    'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/mbp14-spacegray-select-202310?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1697230830200',
+    'https://cdn.dummyjson.com/product-images/laptops/apple-macbook-pro-14-inch-space-grey/thumbnail.webp'
   ],
   'LG_monitor': [
-    'https://www.lg.com/vn/images/man-hinh-may-tinh/md07567789/gallery/D-01.jpg'
+    'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500'
   ],
   'Samsung_monitor': [
-    'https://images.samsung.com/is/image/samsung/p6pim/vn/ls49cg954eexxv/gallery/vn-odyssey-oled-g9-g95sc-467262-ls49cg954eexxv-537446450?$650_519_PNG$'
+    'https://images.unsplash.com/photo-1551645120-d70bfe84c826?w=500'
   ],
   'ASUS_monitor': [
-    'https://dlcdnwebimgs.asus.com/gain/B5C953DB-CA3E-448A-9FF3-1ADDF8097CFA/w240/h175'
+    'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500'
   ],
   'DELL_monitor': [
-    'https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/peripherals/monitors/alienware/aw3225qf/media-gallery/aw3225qf-black-gallery-1.png?fmt=png-alpha&wid=800&hei=600'
+    'https://images.unsplash.com/photo-1551645120-d70bfe84c826?w=500'
   ],
   'Logitech_mouse': [
-    'https://resource.logitechg.com/w_692,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/gaming/en/products/pro-x-superlight-2/gallery-1-pro-x-superlight-2-magenta.png?v=1'
+    'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500'
   ],
   'Razer_mouse': [
-    'https://assets2.razerzone.com/images/pnx.assets/e3d0979becc80ce94d2f0eb3a77a940f/razer-deathadder-v3-pro-white-500x500.png'
+    'https://images.unsplash.com/photo-1615663245857-ac93bb7c3c9c?w=500'
   ],
   'Akko_keyboard': [
-    'https://en.akkogear.com/wp-content/uploads/2023/11/MOD007B-HE-1.png'
+    'https://images.unsplash.com/photo-1595225476474-87563907a212?w=500'
   ],
   'Keychron_keyboard': [
-    'https://www.keychron.com/cdn/shop/files/Keychron-Q1-Max-QMK-VIA-Wireless-Custom-Mechanical-Keyboard-Carbon-Black.png'
+    'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=500'
   ],
   'HyperX_headset': [
-    'https://row.hyperx.com/cdn/shop/files/hyperx_cloud_iii_wireless_black_1_main_1024x1024.jpg'
+    'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=500'
   ],
   'SteelSeries_headset': [
-    'https://media.steelseriescdn.com/thumbs/catalogue/products/00969-arctis-nova-pro-wireless-xbox/bb6ba202118349cb86efd0319efb0981.png.500x400_q100_crop-fit_optimize.png'
+    'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=500'
   ]
 };
 
