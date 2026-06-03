@@ -8,7 +8,7 @@ const trustItems = [
   { icon: <Shield className="w-5 h-5" />, title: 'Bảo hành chính hãng', desc: '12-24 tháng', color: 'text-blue-400' },
   { icon: <RotateCcw className="w-5 h-5" />, title: 'Đổi trả dễ dàng', desc: '30 ngày', color: 'text-emerald-400' },
   { icon: <CreditCard className="w-5 h-5" />, title: 'Trả góp 0%', desc: '12 tháng qua thẻ', color: 'text-purple-400' },
-  { icon: <Headphones className="w-5 h-5" />, title: 'Hỗ trợ 24/7', desc: 'AI + Nhân viên', color: 'text-orange-400' },
+  { icon: <Headphones className="w-5 h-5" />, title: 'Hỗ trợ 24/7', desc: 'Tư vấn chuyên sâu', color: 'text-orange-400' },
   { icon: <Zap className="w-5 h-5" />, title: 'Giao hàng nhanh', desc: 'TP.HCM & Hà Nội', color: 'text-yellow-400' },
 ];
 

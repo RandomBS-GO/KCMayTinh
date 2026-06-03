@@ -12,11 +12,11 @@ import { generateId } from '@/lib/utils';
 // Quick question suggestions
 const QUICK_QUESTIONS = [
   '💻 Laptop gaming dưới 20 triệu?',
-  '🤖 Máy nào học AI tốt nhất?',
   '⚡ So sánh RTX 4060 vs RTX 4070',
   '📚 Laptop sinh viên giá tốt?',
   '🎮 PC gaming 30 triệu build gì?',
-  '🖥️ Màn hình 4K gaming tốt nhất?',
+  '🔭 Màn hình 4K gaming tốt nhất?',
+  '💳 Chính sách trả góp 0%?',
 ];
 
 const WELCOME_MESSAGE: ChatMessage = {

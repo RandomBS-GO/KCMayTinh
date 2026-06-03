@@ -35,7 +35,7 @@ export default function NewsletterSection() {
             Nhận Ưu Đãi <span className="gradient-text">Độc Quyền</span>
           </h2>
           <p className="text-slate-400 mb-8">
-            Đăng ký để nhận thông báo khuyến mãi, sản phẩm mới nhất và lời khuyên từ AI về máy tính phù hợp với bạn.
+            Đăng ký để nhận thông báo khuyến mãi, sản phẩm mới nhất và ưu đãi độc quyền dành riêng cho thành viên TechStore.
           </p>
 
           {!submitted ? (

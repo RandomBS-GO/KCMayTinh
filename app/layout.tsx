@@ -7,34 +7,35 @@ const inter = Inter({ subsets: ['latin', 'vietnamese'] });
 
 export const metadata: Metadata = {
   title: {
-    default: 'TechStore AI – Mua Máy Tính Thông Minh với AI Tư Vấn',
-    template: '%s | TechStore AI',
+    default: 'TechStore – Laptop, PC Gaming & Phụ Kiện Chính Hãng',
+    template: '%s | TechStore',
   },
   description:
-    'Website bán máy tính laptop, PC Gaming, màn hình, linh kiện hàng đầu Việt Nam. AI tư vấn cấu hình phù hợp, so sánh sản phẩm, hỗ trợ ra quyết định mua hàng nhanh chóng.',
+    'TechStore – Chuỗi bán lẻ công nghệ hàng đầu Việt Nam. Laptop, PC Gaming, màn hình, linh kiện chính hãng. Bảo hành 24 tháng, giao hàng nhanh, trả góp 0%.',
   keywords: [
     'laptop',
     'PC gaming',
     'máy tính',
-    'linh kiện',
-    'AI tư vấn',
-    'mua máy tính',
+    'linh kiện máy tính',
     'laptop gaming',
     'laptop văn phòng',
+    'màn hình gaming',
+    'mua laptop chính hãng',
+    'techstore',
   ],
-  authors: [{ name: 'TechStore AI Team' }],
+  authors: [{ name: 'TechStore Team' }],
   openGraph: {
     type: 'website',
     locale: 'vi_VN',
-    url: 'http://localhost:3000', // Đổi thành domain thật của bạn sau khi deploy
-    siteName: 'TechStore AI',
-    title: 'TechStore AI – Mua Máy Tính Thông Minh với AI Tư Vấn',
-    description: 'AI tư vấn cấu hình phù hợp, so sánh sản phẩm, hỗ trợ ra quyết định mua hàng',
+    url: 'https://kc-may-tinh.vercel.app',
+    siteName: 'TechStore',
+    title: 'TechStore – Laptop, PC Gaming & Phụ Kiện Chính Hãng',
+    description: 'Chuỗi bán lẻ công nghệ hàng đầu Việt Nam. Laptop, PC Gaming, linh kiện chính hãng.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'TechStore AI',
-    description: 'AI tư vấn máy tính thông minh',
+    title: 'TechStore',
+    description: 'Laptop, PC Gaming, linh kiện chính hãng – Bảo hành 24 tháng, giao hàng nhanh.',
   },
   robots: {
     index: true,

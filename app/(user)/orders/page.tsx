@@ -21,28 +21,20 @@ export default function OrdersPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (status === "authenticated") {
-      fetchOrders();
-    }
-  }, [status]);
-
-  const fetchOrders = async () => {
-    try {
-      // In a real app, you'd fetch orders linked to the user's ID/email
-      // For now, we'll just fetch all orders as a placeholder or filter by customer info
-      const res = await fetch("/api/orders");
-      if (res.ok) {
-        const responseData = await res.json();
-        // Giả lập filter đơn hàng của user dựa vào email nếu API chưa hỗ trợ user_id
-        const userOrders = responseData.data?.filter((o: any) => o.customer?.email === session?.user?.email) || [];
+    if (status !== "authenticated") return;
+    setIsLoading(true);
+    fetch("/api/orders")
+      .then((res) => res.ok ? res.json() : null)
+      .then((responseData) => {
+        const userOrders = responseData?.data?.filter(
+          (o: any) => o.customer?.email === session?.user?.email
+        ) || [];
         setOrders(userOrders);
-      }
-    } catch (error) {
-      toast.error("Không thể tải danh sách đơn hàng");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      })
+      .catch(() => toast.error("Không thể tải danh sách đơn hàng"))
+      .finally(() => setIsLoading(false));
+  }, [status, session?.user?.email]);
+
 
   if (status === "loading") {
     return <div className="min-h-screen pt-24 pb-12 flex justify-center items-center text-cyan-400">Đang tải...</div>;

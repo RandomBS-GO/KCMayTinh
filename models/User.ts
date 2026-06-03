@@ -6,6 +6,7 @@ export interface IUser extends Document {
   password?: string;
   phone?: string;
   address?: string;
+  image?: string;        // Google/OAuth avatar URL
   role: 'user' | 'admin';
   createdAt: Date;
   updatedAt: Date;
@@ -27,7 +28,7 @@ const UserSchema: Schema<IUser> = new Schema(
     },
     password: {
       type: String,
-      // Optional because OAuth users (Google/Facebook) might not have a password
+      // Optional — OAuth users (Google) do not have a password stored here
     },
     phone: {
       type: String,
@@ -35,6 +36,9 @@ const UserSchema: Schema<IUser> = new Schema(
     },
     address: {
       type: String,
+    },
+    image: {
+      type: String,     // Google avatar URL
     },
     role: {
       type: String,
@@ -47,7 +51,8 @@ const UserSchema: Schema<IUser> = new Schema(
   }
 );
 
-// Prevent mongoose from recompiling the model if it already exists
-const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
+// Prevent mongoose from recompiling the model on hot reload
+const User: Model<IUser> =
+  mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
 
 export default User;

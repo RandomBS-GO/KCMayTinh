@@ -4,26 +4,24 @@ import CategorySection from '@/components/home/CategorySection';
 import FeaturedProducts from '@/components/home/FeaturedProducts';
 import BannerPromo from '@/components/home/BannerPromo';
 import BestsellerProducts from '@/components/home/BestsellerProducts';
-import AIAssistantSection from '@/components/home/AIAssistantSection';
-import TrustBar from '@/components/home/TrustBar';
+import WhyChooseUsSection from '@/components/home/AIAssistantSection';
 import NewsletterSection from '@/components/home/NewsletterSection';
 
 export const metadata: Metadata = {
-  title: 'TechStore AI – Website Bán Máy Tính Thông Minh Hàng Đầu Việt Nam',
+  title: 'TechStore – Laptop, PC Gaming & Phụ Kiện Chính Hãng Hàng Đầu Việt Nam',
   description:
-    'Mua laptop, PC gaming, màn hình, linh kiện với giá tốt nhất. AI tư vấn cấu hình phù hợp, so sánh sản phẩm, hỗ trợ ra quyết định mua hàng nhanh chóng.',
+    'Mua laptop, PC gaming, màn hình, linh kiện với giá tốt nhất. Bảo hành 24 tháng chính hãng, giao hàng nhanh, trả góp 0% lãi suất.',
 };
 
 export default function HomePage() {
   return (
     <div className="overflow-hidden">
       <HeroSection />
-      <TrustBar />
       <CategorySection />
       <FeaturedProducts />
       <BannerPromo />
       <BestsellerProducts />
-      <AIAssistantSection />
+      <WhyChooseUsSection />
       <NewsletterSection />
     </div>
   );

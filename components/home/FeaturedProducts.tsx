@@ -31,7 +31,7 @@ export default function FeaturedProducts() {
           >
             <p className="badge-blue mb-2">⭐ Nổi bật</p>
             <h2 className="section-title">Sản Phẩm Nổi Bật</h2>
-            <p className="section-subtitle text-base mt-1">Được AI chọn lọc & khách hàng yêu thích nhất</p>
+            <p className="section-subtitle text-base mt-1">Sản phẩm được khách hàng tin dùng và đánh giá cao nhất</p>
           </motion.div>
 
           <div className="hidden md:flex items-center gap-2">
