@@ -18,7 +18,6 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       const res = await signIn("credentials", { email, password, redirect: false });
-      alert("SignIn Response: " + JSON.stringify(res));
       
       if (res?.error) {
         toast.error(res.error);

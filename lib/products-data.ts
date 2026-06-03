@@ -4,41 +4,39 @@
  */
 import { Product } from '@/types';
 
-// Helper to generate realistic product images using Unsplash
+// Helper to generate realistic product images using real URLs
 const laptopImages = [
-  'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800',
-  'https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=800',
-  'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=800',
-  'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800',
-  'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=800',
-  'https://images.unsplash.com/photo-1484788984921-03950022c9ef?w=800',
+  'https://dlcdnwebimgs.asus.com/gain/97E259EB-41BD-4428-AB01-B73307BCF5A0/w240/h175',
+  'https://p3-ofp.static.pub//fes/cms/2023/12/15/4xydy4ep233tyff9v1q6mnh223n09a473215.png',
+  'https://images.acer.com/is/image/acer/Predator-Helios-18-PH18-71-AG-Black-01a-1?$Product-Cards-XL$',
+  'https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/alienware-notebooks/alienware-m18-r2/media-gallery/awm18-r2-black-gallery-3.png',
+  'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/mbp14-spacegray-select-202310?wid=904&hei=840&fmt=jpeg&qlt=90',
 ];
 
 const monitorImages = [
-  'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800',
-  'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=800',
-  'https://images.unsplash.com/photo-1547082299-de196ea013d6?w=800',
+  'https://www.lg.com/vn/images/man-hinh-may-tinh/md07567789/gallery/D-01.jpg',
+  'https://images.samsung.com/is/image/samsung/p6pim/vn/ls49cg954eexxv/gallery/vn-odyssey-oled-g9-g95sc-467262-ls49cg954eexxv-537446450',
+  'https://dlcdnwebimgs.asus.com/gain/B5C953DB-CA3E-448A-9FF3-1ADDF8097CFA/w240/h175',
 ];
 
 const mouseImages = [
-  'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800',
-  'https://images.unsplash.com/photo-1605773527852-c546a8584ea3?w=800',
+  'https://resource.logitechg.com/w_692,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/gaming/en/products/pro-x-superlight-2/gallery-1-pro-x-superlight-2-magenta.png',
+  'https://assets2.razerzone.com/images/pnx.assets/e3d0979becc80ce94d2f0eb3a77a940f/razer-deathadder-v3-pro-white-500x500.png',
 ];
 
 const keyboardImages = [
-  'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=800',
-  'https://images.unsplash.com/photo-1601445638532-3c6f6c3aa1d6?w=800',
+  'https://en.akkogear.com/wp-content/uploads/2023/11/MOD007B-HE-1.png',
+  'https://www.keychron.com/cdn/shop/files/Keychron-Q1-Max-QMK-VIA-Wireless-Custom-Mechanical-Keyboard-Carbon-Black.png',
 ];
 
 const headsetImages = [
-  'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800',
-  'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=800',
+  'https://row.hyperx.com/cdn/shop/files/hyperx_cloud_iii_wireless_black_1_main_1024x1024.jpg',
+  'https://media.steelseriescdn.com/thumbs/catalogue/products/00969-arctis-nova-pro-wireless-xbox/bb6ba202118349cb86efd0319efb0981.png.500x400_q100_crop-fit_optimize.png',
 ];
 
 const pcImages = [
-  'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=800',
-  'https://images.unsplash.com/photo-1593640408182-31c228816c5c?w=800',
-  'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800',
+  'https://dlcdnwebimgs.asus.com/gain/0D3A20B7-FA03-4DAE-B4A4-1DFEDFA94ED4/w240/h175',
+  'https://asset.msi.com/resize/image/global/product/product_1642491176bc5a58fa49d63c469b27521ab299ebf4.png',
 ];
 
 function img(arr: string[], i: number) {
