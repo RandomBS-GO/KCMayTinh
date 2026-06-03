@@ -34,7 +34,7 @@ export default function HeroSection() {
       <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-brand-600/8 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent-600/6 rounded-full blur-3xl" />
 
-      <div className="container-custom relative z-10 py-16 lg:py-24">
+      <div className="container-custom relative z-10 pt-24 pb-16 lg:pt-32 lg:pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
           {/* Left — Content */}

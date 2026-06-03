@@ -44,6 +44,7 @@ export const metadata: Metadata = {
 };
 
 import Providers from '@/components/Providers';
+import ChatBot from '@/components/ai/ChatBot';
 
 export default function RootLayout({
   children,
@@ -63,6 +64,7 @@ export default function RootLayout({
       <body className={`${inter.className} bg-dark-950 text-slate-100 antialiased`}>
         <Providers>
           {children}
+          <ChatBot />
         </Providers>
         <Toaster
           position="top-right"
