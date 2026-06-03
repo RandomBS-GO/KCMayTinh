@@ -14,7 +14,11 @@ import {
   Sparkles,
   Heart,
   Bell,
+  User,
+  LogOut,
+  Package
 } from 'lucide-react';
+import { useSession, signOut } from 'next-auth/react';
 import { useCartStore, useChatStore } from '@/store';
 import { getCategoryLabel } from '@/lib/utils';
 
@@ -34,10 +38,11 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
+  const { data: session } = useSession();
   const cartItems = useCartStore((s) => s.totalItems());
   const openCart = useCartStore((s) => s.openCart);
-  const openChat = useChatStore((s) => s.openChat);
 
   // Detect scroll
   useEffect(() => {
@@ -147,14 +152,64 @@ export default function Header() {
               </div>
             </form>
 
-            {/* AI Chat button */}
-            <button
-              onClick={openChat}
-              className="hidden lg:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 text-cyan-400 rounded-xl text-sm font-medium hover:from-cyan-500/30 hover:to-blue-500/30 transition-all group"
-            >
-              <span className="text-base group-hover:animate-bounce-subtle">🤖</span>
-              <span>AI Tư Vấn</span>
-            </button>
+            {/* User Account */}
+            <div className="hidden lg:block relative">
+              {session ? (
+                <div>
+                  <button
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                    className="flex items-center gap-2 px-3 py-2 bg-dark-800 hover:bg-dark-700 border border-dark-600 rounded-xl transition-all"
+                  >
+                    <div className="w-6 h-6 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-xs font-bold text-white">
+                      {session.user?.name?.charAt(0).toUpperCase() || "U"}
+                    </div>
+                    <span className="text-sm font-medium text-slate-200 max-w-[100px] truncate">{session.user?.name}</span>
+                    <ChevronDown className="w-4 h-4 text-slate-400" />
+                  </button>
+                  
+                  <AnimatePresence>
+                    {isUserMenuOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute right-0 top-full mt-2 w-48 bg-dark-800 border border-dark-600 rounded-xl shadow-xl overflow-hidden z-50"
+                      >
+                        <div className="p-3 border-b border-dark-700">
+                          <p className="text-sm font-medium text-slate-200 truncate">{session.user?.name}</p>
+                          <p className="text-xs text-slate-400 truncate">{session.user?.email}</p>
+                        </div>
+                        <div className="p-1">
+                          <Link href="/profile" onClick={() => setIsUserMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-cyan-400 hover:bg-dark-700 rounded-lg transition-colors">
+                            <User className="w-4 h-4" /> Tài khoản
+                          </Link>
+                          <Link href="/orders" onClick={() => setIsUserMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-cyan-400 hover:bg-dark-700 rounded-lg transition-colors">
+                            <Package className="w-4 h-4" /> Đơn hàng
+                          </Link>
+                          {session.user?.role === 'admin' && (
+                            <Link href="/admin" onClick={() => setIsUserMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm text-amber-400 hover:bg-dark-700 rounded-lg transition-colors">
+                              <Sparkles className="w-4 h-4" /> Quản trị Admin
+                            </Link>
+                          )}
+                          <button onClick={() => signOut()} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-dark-700 rounded-lg transition-colors text-left">
+                            <LogOut className="w-4 h-4" /> Đăng xuất
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 text-cyan-400 rounded-xl text-sm font-medium hover:from-cyan-500/30 hover:to-blue-500/30 transition-all group"
+                >
+                  <User className="w-4 h-4" />
+                  <span>Đăng nhập</span>
+                </Link>
+              )}
+            </div>
 
             {/* Nav icons */}
             <div className="flex items-center gap-1">
@@ -253,13 +308,41 @@ export default function Header() {
                     <span>{getCategoryLabel(cat.value)}</span>
                   </Link>
                 ))}
-                <button
-                  onClick={() => { openChat(); setIsMobileMenuOpen(false); }}
-                  className="w-full flex items-center gap-3 px-4 py-3 text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 rounded-xl transition-colors"
-                >
-                  <span>🤖</span>
-                  <span className="font-medium">AI Tư Vấn Mua Hàng</span>
-                </button>
+                
+                {/* Mobile Auth */}
+                <div className="px-4 pt-4 border-t border-dark-700 mt-2">
+                  {session ? (
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-3 px-4 py-3 bg-dark-800 rounded-xl mb-2">
+                        <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-sm font-bold text-white">
+                          {session.user?.name?.charAt(0).toUpperCase() || "U"}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-slate-200 truncate">{session.user?.name}</p>
+                          <p className="text-xs text-slate-400 truncate">{session.user?.email}</p>
+                        </div>
+                      </div>
+                      <Link href="/profile" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-slate-300 hover:text-cyan-400 hover:bg-dark-800 rounded-xl transition-colors">
+                        <User className="w-5 h-5" /> Tài khoản
+                      </Link>
+                      <Link href="/orders" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-slate-300 hover:text-cyan-400 hover:bg-dark-800 rounded-xl transition-colors">
+                        <Package className="w-5 h-5" /> Đơn hàng
+                      </Link>
+                      <button onClick={() => { signOut(); setIsMobileMenuOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-dark-800 rounded-xl transition-colors text-left">
+                        <LogOut className="w-5 h-5" /> Đăng xuất
+                      </button>
+                    </div>
+                  ) : (
+                    <Link
+                      href="/login"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 rounded-xl transition-colors"
+                    >
+                      <User className="w-5 h-5" />
+                      <span className="font-medium">Đăng nhập / Đăng ký</span>
+                    </Link>
+                  )}
+                </div>
               </nav>
             </motion.div>
           )}
