@@ -173,7 +173,7 @@ export default function HeroSection() {
             <motion.div
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
-              className="absolute -bottom-4 -left-6 bg-dark-900 border border-dark-700 rounded-2xl px-4 py-3 shadow-elevation-2"
+              className="absolute -bottom-4 -left-6 z-20 bg-dark-900 border border-dark-700 rounded-2xl px-4 py-3 shadow-elevation-2"
             >
               <div className="flex items-center gap-2">
                 <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
@@ -188,7 +188,7 @@ export default function HeroSection() {
             <motion.div
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 3.5, repeat: Infinity, delay: 1 }}
-              className="absolute -top-4 -right-4 bg-brand-600 rounded-2xl px-4 py-3 shadow-glow-sm"
+              className="absolute -top-4 -right-4 z-20 bg-brand-600 rounded-2xl px-4 py-3 shadow-glow-sm"
             >
               <p className="text-xs font-bold text-white">Giảm 11%</p>
               <p className="text-[11px] text-brand-200">Hôm nay</p>
