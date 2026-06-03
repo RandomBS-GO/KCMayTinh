@@ -70,7 +70,9 @@ export default withAuth(
         // Protected user routes — require any valid session
         if (
           pathname.startsWith("/profile") ||
-          pathname.startsWith("/orders")
+          pathname.startsWith("/orders") ||
+          pathname.startsWith("/wishlist") ||
+          pathname.startsWith("/checkout")
         ) {
           return !!token;
         }
@@ -87,6 +89,8 @@ export const config = {
     "/admin/:path*",
     "/profile/:path*",
     "/orders/:path*",
+    "/wishlist/:path*",
+    "/checkout/:path*",
     "/api/auth/register",
     "/api/orders/:path*",
     "/api/ai/:path*",

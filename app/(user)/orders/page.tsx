@@ -2,6 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { formatPrice } from "@/lib/utils";
 import { Package, Clock, CheckCircle, XCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
@@ -37,14 +38,14 @@ export default function OrdersPage() {
 
 
   if (status === "loading") {
-    return <div className="min-h-screen pt-24 pb-12 flex justify-center items-center text-cyan-400">Đang tải...</div>;
+    return <div className="min-h-screen pt-24 pb-12 flex justify-center items-center text-brand-400">Đang tải...</div>;
   }
 
   if (status === "unauthenticated") {
     return (
       <div className="min-h-screen pt-24 pb-12 flex flex-col justify-center items-center">
         <h1 className="text-2xl font-bold text-slate-100">Vui lòng đăng nhập</h1>
-        <Link href="/login" className="mt-4 px-6 py-2 bg-cyan-500 text-white rounded-lg">Đăng nhập ngay</Link>
+        <Link href="/login" className="mt-4 px-6 py-2 bg-brand-600 text-white rounded-lg">Đăng nhập ngay</Link>
       </div>
     );
   }
@@ -77,7 +78,7 @@ export default function OrdersPage() {
       
       {isLoading ? (
         <div className="flex justify-center py-12">
-          <div className="w-8 h-8 border-2 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-2 border-brand-500/30 border-t-brand-500 rounded-full animate-spin"></div>
         </div>
       ) : orders.length === 0 ? (
         <div className="bg-dark-900 border border-dark-700 rounded-2xl p-12 text-center shadow-glow-sm">
@@ -86,7 +87,7 @@ export default function OrdersPage() {
           </div>
           <h2 className="text-xl font-bold text-slate-100 mb-2">Chưa có đơn hàng nào</h2>
           <p className="text-slate-400 mb-6">Bạn chưa thực hiện bất kỳ giao dịch mua hàng nào.</p>
-          <Link href="/products" className="inline-flex px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium rounded-xl hover:from-cyan-400 hover:to-blue-500 transition-colors shadow-glow-sm">
+          <Link href="/products" className="inline-flex px-6 py-2.5 bg-gradient-to-r from-brand-600 to-accent-600 text-white font-medium rounded-xl hover:from-brand-500 hover:to-accent-500 transition-colors shadow-glow-sm">
             Bắt đầu mua sắm
           </Link>
         </div>
@@ -107,8 +108,8 @@ export default function OrdersPage() {
                 </div>
                 <div className="text-right">
                   <div className="text-sm text-slate-400">Tổng tiền</div>
-                  <div className="text-xl font-bold text-cyan-400">
-                    {new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(order.totalAmount)}
+                  <div className="text-xl font-bold text-brand-400">
+                    {formatPrice(order.totalAmount)}
                   </div>
                 </div>
               </div>
@@ -121,7 +122,7 @@ export default function OrdersPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <h4 className="text-slate-100 font-medium truncate">{item.name}</h4>
-                      <p className="text-sm text-slate-400">Số lượng: {item.quantity} x {new Intl.NumberFormat("vi-VN").format(item.price)} ₫</p>
+                      <p className="text-sm text-slate-400">Số lượng: {item.quantity} x {formatPrice(item.price)}</p>
                     </div>
                   </div>
                 ))}

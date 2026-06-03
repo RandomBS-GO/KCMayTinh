@@ -13,8 +13,9 @@ import ReactMarkdown from 'react-markdown';
 import ProductCard from '@/components/shop/ProductCard';
 import { Product } from '@/types';
 import { formatPrice, calculateDiscount, getCategoryLabel } from '@/lib/utils';
-import { useCartStore, useWishlistStore, useCompareStore, useChatStore } from '@/store';
+import { useCartStore, useWishlistStore, useCompareStore } from '@/store';
 import { getProductById, getRelatedProducts } from '@/lib/products-data';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -25,15 +26,12 @@ export default function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<'specs' | 'reviews' | 'warranty'>('specs');
-  const [aiAnalysis, setAiAnalysis] = useState<string>('');
-  const [aiLoading, setAiLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
   const [addedToCart, setAddedToCart] = useState(false);
-
   const addItem = useCartStore((s) => s.addItem);
   const { toggle, isWishlisted } = useWishlistStore();
   const addToCompare = useCompareStore((s) => s.addProduct);
-  const openChat = useChatStore((s) => s.openChat);
+  const { requireAuth } = useAuthGuard();
 
   useEffect(() => {
     // Load product from mock data
@@ -47,37 +45,10 @@ export default function ProductDetailPage() {
 
   const handleAddToCart = () => {
     if (!product) return;
-    addItem(product, quantity);
-    setAddedToCart(true);
-    setTimeout(() => setAddedToCart(false), 2000);
-  };
-
-  const handleAIAnalyze = async () => {
-    if (!product || aiLoading) return;
-    setAiLoading(true);
-
-    try {
-      const response = await fetch('/api/ai/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: `Hãy phân tích chi tiết sản phẩm "${product.name}" với giá ${formatPrice(product.price)}. Thông số: ${JSON.stringify(product.specs)}. Phù hợp cho nhu cầu: ${product.useCases.join(', ')}. Phân tích điểm mạnh, điểm cần lưu ý, và ai nên mua sản phẩm này.`,
-          productContext: {
-            name: product.name,
-            price: product.price,
-            specs: product.specs,
-            category: product.category,
-            useCases: product.useCases,
-          },
-        }),
-      });
-
-      const data = await response.json();
-      setAiAnalysis(data.response || 'Không thể phân tích sản phẩm lúc này.');
-    } catch {
-      setAiAnalysis('⚠️ Không thể kết nối AI. Vui lòng thử lại sau.');
-    } finally {
-      setAiLoading(false);
+    if (requireAuth('thêm vào giỏ hàng')) {
+      addItem(product, quantity);
+      setAddedToCart(true);
+      setTimeout(() => setAddedToCart(false), 2000);
     }
   };
 
@@ -186,57 +157,6 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {/* AI Analysis Section */}
-            <div className="card p-5 rounded-2xl border border-cyan-500/20">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-sm">
-                  🤖
-                </div>
-                <h3 className="font-semibold text-slate-200">Phân Tích AI</h3>
-              </div>
-
-              {!aiAnalysis ? (
-                <div className="text-center py-4">
-                  <p className="text-sm text-slate-400 mb-4">
-                    Để TechBot AI phân tích sản phẩm này và cho bạn biết có phù hợp với nhu cầu không!
-                  </p>
-                  <button
-                    onClick={handleAIAnalyze}
-                    disabled={aiLoading}
-                    className="btn-primary btn-sm gap-2"
-                  >
-                    {aiLoading ? (
-                      <><Loader2 className="w-4 h-4 animate-spin" /> Đang phân tích...</>
-                    ) : (
-                      <><Bot className="w-4 h-4" /> Hỏi AI về sản phẩm này</>
-                    )}
-                  </button>
-                </div>
-              ) : (
-                <div className="text-sm text-slate-300 leading-relaxed">
-                  <ReactMarkdown
-                    components={{
-                      p: ({ children }) => <p className="mb-2">{children}</p>,
-                      strong: ({ children }) => <strong className="text-cyan-300 font-semibold">{children}</strong>,
-                      ul: ({ children }) => <ul className="list-disc list-inside space-y-1 my-2">{children}</ul>,
-                      li: ({ children }) => <li className="text-slate-300">{children}</li>,
-                    }}
-                  >
-                    {aiAnalysis}
-                  </ReactMarkdown>
-
-                  <div className="flex gap-2 mt-4">
-                    <button onClick={openChat} className="btn-outline btn-sm gap-2">
-                      <MessageSquare className="w-4 h-4" />
-                      Chat thêm với AI
-                    </button>
-                    <button onClick={() => setAiAnalysis('')} className="btn-ghost btn-sm">
-                      Làm mới
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
           </div>
 
           {/* Right: Product Info */}
@@ -363,7 +283,11 @@ export default function ProductDetailPage() {
                   )}
                 </button>
                 <button
-                  onClick={() => toggle(product._id)}
+                  onClick={() => {
+                    if (requireAuth('thêm vào danh sách yêu thích')) {
+                      toggle(product._id);
+                    }
+                  }}
                   className={`p-4 rounded-xl border transition-all ${
                     isWishlisted(product._id)
                       ? 'bg-red-500/20 border-red-500/30 text-red-400'
@@ -382,13 +306,17 @@ export default function ProductDetailPage() {
               </div>
 
               {/* Buy now */}
-              <Link
-                href="/checkout"
-                onClick={() => addItem(product, quantity)}
+              <button
+                onClick={() => {
+                  if (requireAuth('mua hàng')) {
+                    addItem(product, quantity);
+                    router.push('/checkout');
+                  }
+                }}
                 className="btn-outline w-full text-center py-4"
               >
                 Mua Ngay →
-              </Link>
+              </button>
             </div>
 
             {/* Guarantees */}

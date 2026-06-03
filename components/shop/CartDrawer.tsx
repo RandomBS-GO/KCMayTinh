@@ -6,6 +6,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useCartStore } from '@/store';
 import { formatPrice } from '@/lib/utils';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
+import { useRouter } from 'next/navigation';
 
 export default function CartDrawer() {
   const items = useCartStore((s) => s.items);
@@ -15,6 +17,8 @@ export default function CartDrawer() {
   const updateQuantity = useCartStore((s) => s.updateQuantity);
   const totalPrice = useCartStore((s) => s.totalPrice());
   const totalItems = useCartStore((s) => s.totalItems());
+  const { requireAuth } = useAuthGuard();
+  const router = useRouter();
 
   const shippingFee = totalPrice >= 5_000_000 ? 0 : 50_000;
   const finalTotal = totalPrice + shippingFee;
@@ -191,13 +195,17 @@ export default function CartDrawer() {
                 </div>
 
                 {/* Checkout button */}
-                <Link
-                  href="/checkout"
-                  onClick={closeCart}
+                <button
+                  onClick={() => {
+                    if (requireAuth('thanh toán đơn hàng')) {
+                      closeCart();
+                      router.push('/checkout');
+                    }
+                  }}
                   className="btn-primary w-full text-center"
                 >
                   Thanh toán ngay →
-                </Link>
+                </button>
 
                 <Link
                   href="/products"

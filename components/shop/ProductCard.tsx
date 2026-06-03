@@ -7,6 +7,7 @@ import { Product } from '@/types';
 import { formatPrice, calculateDiscount, getCategoryLabel } from '@/lib/utils';
 import { useCartStore, useWishlistStore, useCompareStore } from '@/store';
 import { cn } from '@/lib/utils';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 
 interface ProductCardProps {
   product: Product;
@@ -18,6 +19,7 @@ export default function ProductCard({ product, variant = 'default', className }:
   const addItem = useCartStore((s) => s.addItem);
   const { toggle, isWishlisted } = useWishlistStore();
   const addToCompare = useCompareStore((s) => s.addProduct);
+  const { requireAuth } = useAuthGuard();
 
   const wishlisted = isWishlisted(product._id);
   const discountPercent = product.originalPrice
@@ -77,7 +79,12 @@ export default function ProductCard({ product, variant = 'default', className }:
 
       {/* Wishlist button */}
       <button
-        onClick={(e) => { e.preventDefault(); toggle(product._id); }}
+        onClick={(e) => { 
+          e.preventDefault(); 
+          if (requireAuth('thêm vào danh sách yêu thích')) {
+            toggle(product._id);
+          }
+        }}
         className={cn(
           'absolute top-3 right-3 z-10 w-8 h-8 rounded-lg flex items-center justify-center transition-all',
           wishlisted
@@ -184,7 +191,12 @@ export default function ProductCard({ product, variant = 'default', className }:
 
         {/* Add to cart button */}
         <button
-          onClick={() => addItem(product)}
+          onClick={(e) => {
+            e.preventDefault();
+            if (requireAuth('thêm vào giỏ hàng')) {
+              addItem(product);
+            }
+          }}
           disabled={product.stock === 0}
           className="w-full btn-primary btn-sm gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
