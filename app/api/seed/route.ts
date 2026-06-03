@@ -88,6 +88,7 @@ export async function GET(request: Request) {
         p.images = [img];
         p.thumbnail = img;
       }
+      delete (p as any)._id; // Remove string _id to allow Mongoose to auto-generate ObjectId
       return p;
     });
 
