@@ -182,3 +182,19 @@ export const useWishlistStore = create<WishlistStore>()(
   )
 );
 
+
+// ==================== CHAT STORE ====================
+interface ChatStore {
+  isOpen: boolean;
+  toggleChat: () => void;
+  openChat: () => void;
+  closeChat: () => void;
+}
+
+export const useChatStore = create<ChatStore>((set, get) => ({
+  isOpen: false,
+  toggleChat: () => set({ isOpen: !get().isOpen }),
+  openChat: () => set({ isOpen: true }),
+  closeChat: () => set({ isOpen: false }),
+}));
+
