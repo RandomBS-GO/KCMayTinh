@@ -11,9 +11,12 @@ interface Order {
   _id: string;
   orderNumber: string;
   createdAt: string;
-  totalAmount: number;
-  status: string;
+  total: number;
+  totalAmount?: number;
+  orderStatus: string;
+  status?: string;
   items: any[];
+  customer?: { name: string; email: string };
 }
 
 export default function OrdersPage() {
@@ -22,15 +25,13 @@ export default function OrdersPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (status !== "authenticated") return;
+    if (status !== "authenticated" || !session?.user?.email) return;
     setIsLoading(true);
-    fetch("/api/orders")
+    const email = encodeURIComponent(session.user.email);
+    fetch(`/api/orders?email=${email}`)
       .then((res) => res.ok ? res.json() : null)
       .then((responseData) => {
-        const userOrders = responseData?.data?.filter(
-          (o: any) => o.customer?.email === session?.user?.email
-        ) || [];
-        setOrders(userOrders);
+        setOrders(responseData?.data || []);
       })
       .catch(() => toast.error("Không thể tải danh sách đơn hàng"))
       .finally(() => setIsLoading(false));
@@ -99,7 +100,7 @@ export default function OrdersPage() {
                 <div>
                   <div className="flex items-center gap-3 mb-1">
                     <span className="font-bold text-slate-100">Mã đơn: #{order.orderNumber}</span>
-                    {getStatusBadge(order.status)}
+                    {getStatusBadge(order.orderStatus ?? order.status ?? 'pending')}
                   </div>
                   <div className="text-sm text-slate-400 flex items-center gap-2">
                     <Clock className="w-3.5 h-3.5" /> 
@@ -109,7 +110,7 @@ export default function OrdersPage() {
                 <div className="text-right">
                   <div className="text-sm text-slate-400">Tổng tiền</div>
                   <div className="text-xl font-bold text-brand-400">
-                    {formatPrice(order.totalAmount)}
+                    {formatPrice(order.total ?? order.totalAmount ?? 0)}
                   </div>
                 </div>
               </div>

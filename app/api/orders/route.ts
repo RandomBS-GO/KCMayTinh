@@ -98,12 +98,19 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
+    const { searchParams } = new URL(request.url);
+    const userEmail = searchParams.get('email');
+
     if (USE_MOCK) {
-      return NextResponse.json({ success: true, data: mockOrders, total: mockOrders.length });
+      const filtered = userEmail
+        ? mockOrders.filter((o: any) => o.customer?.email?.toLowerCase() === userEmail.toLowerCase())
+        : mockOrders;
+      return NextResponse.json({ success: true, data: filtered, total: filtered.length });
     }
 
     await connectDB();
-    const orders = await Order.find({}).sort({ createdAt: -1 }).limit(50).lean();
+    const query = userEmail ? { 'customer.email': { $regex: new RegExp(`^${userEmail}$`, 'i') } } : {};
+    const orders = await Order.find(query).sort({ createdAt: -1 }).limit(500).lean();
     return NextResponse.json({ success: true, data: orders, total: orders.length });
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Lỗi khi tải đơn hàng' }, { status: 500 });

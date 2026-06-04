@@ -413,42 +413,55 @@ function ProductsContent() {
             )}
 
             {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-10">
-                <button
-                  onClick={() => setPage((p) => Math.max(1, p - 1))}
-                  disabled={page === 1}
-                  className="btn-secondary btn-sm disabled:opacity-40"
-                >
-                  ← Trước
-                </button>
+            {totalPages > 1 && (() => {
+              // Build smart page list: always show 1, last, and 2 pages around current
+              const pages: (number | 'ellipsis')[] = [];
+              for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= page - 2 && i <= page + 2)) {
+                  pages.push(i);
+                } else if (pages[pages.length - 1] !== 'ellipsis') {
+                  pages.push('ellipsis');
+                }
+              }
+              return (
+                <div className="flex items-center justify-center flex-wrap gap-2 mt-10">
+                  <button
+                    onClick={() => { setPage((p) => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                    disabled={page === 1}
+                    className="btn-secondary btn-sm disabled:opacity-40"
+                  >
+                    ← Trước
+                  </button>
 
-                {Array.from({ length: Math.min(totalPages, 7) }).map((_, i) => {
-                  const pageNum = i + 1;
-                  return (
-                    <button
-                      key={pageNum}
-                      onClick={() => setPage(pageNum)}
-                      className={`w-9 h-9 rounded-xl text-sm font-medium transition-all ${
-                        page === pageNum
-                          ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-glow'
-                          : 'bg-dark-800 border border-dark-600 text-slate-400 hover:border-cyan-500/50'
-                      }`}
-                    >
-                      {pageNum}
-                    </button>
-                  );
-                })}
+                  {pages.map((p, idx) =>
+                    p === 'ellipsis' ? (
+                      <span key={`ellipsis-${idx}`} className="w-9 h-9 flex items-center justify-center text-slate-500">…</span>
+                    ) : (
+                      <button
+                        key={p}
+                        onClick={() => { setPage(p as number); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                        className={`w-9 h-9 rounded-xl text-sm font-medium transition-all ${
+                          page === p
+                            ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-glow'
+                            : 'bg-dark-800 border border-dark-600 text-slate-400 hover:border-cyan-500/50 hover:text-slate-200'
+                        }`}
+                      >
+                        {p}
+                      </button>
+                    )
+                  )}
 
-                <button
-                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                  disabled={page === totalPages}
-                  className="btn-secondary btn-sm disabled:opacity-40"
-                >
-                  Sau →
-                </button>
-              </div>
-            )}
+                  <button
+                    onClick={() => { setPage((p) => Math.min(totalPages, p + 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                    disabled={page === totalPages}
+                    className="btn-secondary btn-sm disabled:opacity-40"
+                  >
+                    Sau →
+                  </button>
+                  <span className="text-xs text-slate-500 ml-2">Trang {page}/{totalPages} · {total} sản phẩm</span>
+                </div>
+              );
+            })()}
           </div>
         </div>
       </div>
