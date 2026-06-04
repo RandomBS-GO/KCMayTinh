@@ -7,6 +7,7 @@ const nextConfig = {
       { protocol: 'https', hostname: 'storage.googleapis.com' },
       { protocol: 'https', hostname: 'placehold.co' },
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' }, // Google avatars
+      { protocol: 'https', hostname: 'cdn.dummyjson.com' },         // DummyJSON product images
     ],
     formats: ['image/avif', 'image/webp'],
   },
