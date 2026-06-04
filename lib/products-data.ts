@@ -3641,61 +3641,97 @@ export function searchProducts(query: string): Product[] {
       p.shortDescription.toLowerCase().includes(q)
   );
 }
-const BRAND_IMAGES: Record<string, string[]> = {
-  'ASUS_laptop': [
-    'https://cdn.dummyjson.com/product-images/laptops/asus-zenbook-pro-dual-screen-laptop/thumbnail.webp'
-  ],
-  'MSI_laptop': [
-    'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=500'
-  ],
-  'Lenovo_laptop': [
-    'https://cdn.dummyjson.com/product-images/laptops/lenovo-yoga-920/thumbnail.webp'
-  ],
-  'Acer_laptop': [
-    'https://cdn.dummyjson.com/product-images/laptops/huawei-matebook-x-pro/thumbnail.webp'
-  ],
-  'Dell_laptop': [
-    'https://cdn.dummyjson.com/product-images/laptops/new-dell-xps-13-9300-laptop/thumbnail.webp'
-  ],
-  'Apple_laptop': [
-    'https://cdn.dummyjson.com/product-images/laptops/apple-macbook-pro-14-inch-space-grey/thumbnail.webp'
-  ],
-  'LG_monitor': [
-    'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500'
-  ],
-  'Samsung_monitor': [
-    'https://images.unsplash.com/photo-1551645120-d70bfe84c826?w=500'
-  ],
-  'ASUS_monitor': [
-    'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500'
-  ],
-  'DELL_monitor': [
-    'https://images.unsplash.com/photo-1551645120-d70bfe84c826?w=500'
-  ],
-  'Logitech_mouse': [
-    'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500'
-  ],
-  'Razer_mouse': [
-    'https://images.unsplash.com/photo-1615663245857-ac93bb7c3c9c?w=500'
-  ],
-  'Akko_keyboard': [
-    'https://images.unsplash.com/photo-1595225476474-87563907a212?w=500'
-  ],
-  'Keychron_keyboard': [
-    'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=500'
-  ],
-  'HyperX_headset': [
-    'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=500'
-  ],
-  'SteelSeries_headset': [
-    'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=500'
-  ]
+/**
+ * Per-product image map – each entry is keyed by _id
+ * Uses DummyJSON (CDN, no hotlink block) and Unsplash (always open)
+ */
+const PRODUCT_IMAGES: Record<string, string> = {
+  // ── LAPTOPS ──────────────────────────────────────────────────────────────
+  // ASUS
+  '1':  'https://cdn.dummyjson.com/product-images/laptops/asus-zenbook-pro-dual-screen-laptop/thumbnail.webp',  // ROG Zephyrus G14
+  '5':  'https://cdn.dummyjson.com/product-images/laptops/asus-zenbook-pro-dual-screen-laptop/1.webp',          // Vivobook 15 OLED
+  '9':  'https://cdn.dummyjson.com/product-images/laptops/asus-zenbook-pro-dual-screen-laptop/2.webp',          // ROG Strix G16
+  '13': 'https://cdn.dummyjson.com/product-images/laptops/asus-zenbook-pro-dual-screen-laptop/3.webp',          // ZenBook Pro 14
+  '17': 'https://cdn.dummyjson.com/product-images/laptops/asus-zenbook-pro-dual-screen-laptop/4.webp',          // ROG Flow X13
+
+  // MSI
+  '2':  'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=600',   // Titan GT77
+  '11': 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600',   // Prestige 16
+
+  // Lenovo
+  '3':  'https://cdn.dummyjson.com/product-images/laptops/lenovo-yoga-920/thumbnail.webp',  // ThinkPad X1 Carbon
+  '10': 'https://cdn.dummyjson.com/product-images/laptops/lenovo-yoga-920/1.webp',          // IdeaPad Gaming 3
+  '15': 'https://cdn.dummyjson.com/product-images/laptops/lenovo-yoga-920/2.webp',          // LOQ 15ARP9
+
+  // Apple
+  '4':  'https://cdn.dummyjson.com/product-images/laptops/apple-macbook-pro-14-inch-space-grey/thumbnail.webp', // MacBook Pro 16 M3 Pro
+
+  // Acer
+  '6':  'https://cdn.dummyjson.com/product-images/laptops/huawei-matebook-x-pro/thumbnail.webp', // Predator Helios 16
+  '12': 'https://cdn.dummyjson.com/product-images/laptops/huawei-matebook-x-pro/1.webp',        // Swift Go 14
+  '18': 'https://cdn.dummyjson.com/product-images/laptops/huawei-matebook-x-pro/2.webp',        // Nitro V 15
+
+  // HP
+  '7':  'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600',  // Spectre x360
+  '14': 'https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=600',  // Pavilion Gaming 15
+  '20': 'https://images.unsplash.com/photo-1484788984921-03950022c9ef?w=600',  // EliteBook 840
+
+  // Dell
+  '8':  'https://cdn.dummyjson.com/product-images/laptops/new-dell-xps-13-9300-laptop/thumbnail.webp', // XPS 15 9530
+  '16': 'https://cdn.dummyjson.com/product-images/laptops/new-dell-xps-13-9300-laptop/1.webp',         // Alienware m18
+
+  // Gigabyte
+  '19': 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=600',  // Aorus 16X
+
+  // ── PC GAMING ────────────────────────────────────────────────────────────
+  '21': 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=600',  // RTX 4090 Elite Pro
+  '22': 'https://images.unsplash.com/photo-1593640408182-31c228db49b4?w=600',  // RTX 4070 Ti SUPER
+  '23': 'https://images.unsplash.com/photo-1547082299-de196ea013d6?w=600',     // RTX 4060 Ti
+  '24': 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=600',  // RX 7900 XTX
+  '25': 'https://images.unsplash.com/photo-1593640408182-31c228db49b4?w=600',  // RTX 4070
+
+  // ── MONITORS ─────────────────────────────────────────────────────────────
+  '31': 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600',  // ROG Swift OLED PG32
+  '32': 'https://images.unsplash.com/photo-1551645120-d70bfe84c826?w=600',     // LG UltraGear 27 OLED
+  '33': 'https://images.unsplash.com/photo-1547082299-de196ea013d6?w=600',     // Samsung Odyssey Neo G8
+  '34': 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600',  // Dell UltraSharp U2723D
+  '35': 'https://images.unsplash.com/photo-1551645120-d70bfe84c826?w=600',     // MSI MAG 274URFW
+
+  // ── MICE ─────────────────────────────────────────────────────────────────
+  '46': 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=600',  // Logitech G Pro X Superlight 2
+  '47': 'https://images.unsplash.com/photo-1615663245857-ac93bb7c3c9c?w=600',  // Razer DeathAdder V3 Pro
+  '48': 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=600',  // SteelSeries Aerox 5
+  '49': 'https://images.unsplash.com/photo-1615663245857-ac93bb7c3c9c?w=600',  // Logitech MX Master 3S
+
+  // ── KEYBOARDS ────────────────────────────────────────────────────────────
+  '56': 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=600',  // Razer BlackWidow V4 Pro
+  '57': 'https://images.unsplash.com/photo-1595225476474-87563907a212?w=600',  // Logitech G915 TKL
+  '58': 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=600',  // Corsair K100 RGB
+
+  // ── HEADSETS ─────────────────────────────────────────────────────────────
+  '64': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600',  // Razer BlackShark V2 Pro
+  '65': 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=600',     // SteelSeries Arctis Nova Pro
+  '66': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600',  // HyperX Cloud Alpha
+
+  // ── COMPONENTS ───────────────────────────────────────────────────────────
+  '71': 'https://images.unsplash.com/photo-1591488320449-011701bb6704?w=600',  // RTX 4080 Super
+  '72': 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600',     // Intel Core i9-14900K
+};
+
+// Fallback images by category when no per-product mapping exists
+const CATEGORY_FALLBACK: Record<string, string> = {
+  'laptop':     'https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=600',
+  'pc-gaming':  'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=600',
+  'monitor':    'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600',
+  'mouse':      'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=600',
+  'keyboard':   'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=600',
+  'headset':    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600',
+  'component':  'https://images.unsplash.com/photo-1591488320449-011701bb6704?w=600',
 };
 
 ALL_PRODUCTS.forEach(p => {
-  const key = p.brand + '_' + p.category;
-  if (BRAND_IMAGES[key]) {
-    p.images = [BRAND_IMAGES[key][0]];
-    p.thumbnail = BRAND_IMAGES[key][0];
-  }
+  const url = PRODUCT_IMAGES[p._id] || CATEGORY_FALLBACK[p.category] || 'https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=600';
+  p.images = [url];
+  p.thumbnail = url;
 });
+

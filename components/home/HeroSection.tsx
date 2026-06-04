@@ -140,8 +140,8 @@ export default function HeroSection() {
               <div className="bg-dark-900 border border-dark-800 rounded-3xl p-6 shadow-elevation-3">
                 <div className="aspect-square max-w-sm mx-auto rounded-2xl overflow-hidden bg-dark-950">
                   <Image
-                    src="https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=600&q=80"
-                    alt="Laptop gaming cao cấp"
+                    src="https://cdn.dummyjson.com/product-images/laptops/asus-zenbook-pro-dual-screen-laptop/thumbnail.webp"
+                    alt="ASUS ROG Zephyrus G14 2024"
                     width={500}
                     height={500}
                     className="w-full h-full object-contain p-6"
