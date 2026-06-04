@@ -15,7 +15,7 @@ const QUICK_QUESTIONS = [
   '⚡ So sánh RTX 4060 vs RTX 4070',
   '📚 Laptop sinh viên giá tốt?',
   '🎮 PC gaming 30 triệu build gì?',
-  '🔭 Màn hình 4K gaming tốt nhất?',
+  '🔗 Gửi em link laptop ROG Zephyrus',
   '💳 Chính sách trả góp 0%?',
 ];
 
@@ -238,6 +238,20 @@ export default function ChatBot({ productContext }: ChatBotProps) {
                                 ul: ({ children }) => <ul className="list-disc list-inside space-y-0.5 my-1">{children}</ul>,
                                 li: ({ children }) => <li className="text-slate-300">{children}</li>,
                                 code: ({ children }) => <code className="bg-dark-700 px-1 rounded text-xs font-mono text-cyan-400">{children}</code>,
+                                a: ({ href, children }) => (
+                                  <a
+                                    href={href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1 text-cyan-400 hover:text-cyan-300 underline underline-offset-2 transition-colors font-medium"
+                                  >
+                                    {children}
+                                    <ExternalLink className="w-3 h-3 flex-shrink-0" />
+                                  </a>
+                                ),
+                                table: ({ children }) => <table className="w-full text-xs border-collapse my-2">{children}</table>,
+                                th: ({ children }) => <th className="border border-dark-600 px-2 py-1 bg-dark-700 text-cyan-300 text-left">{children}</th>,
+                                td: ({ children }) => <td className="border border-dark-600 px-2 py-1 text-slate-300">{children}</td>,
                               }}
                             >
                               {msg.content}
@@ -249,30 +263,31 @@ export default function ChatBot({ productContext }: ChatBotProps) {
 
                         {/* Product cards from AI */}
                         {msg.productCards && msg.productCards.length > 0 && (
-                          <div className="space-y-2 w-full">
+                          <div className="space-y-2 w-full mt-1">
+                            <p className="text-[10px] text-slate-500 ml-1">Sản phẩm gợi ý:</p>
                             {msg.productCards.map((card) => (
                               <Link
                                 key={card.id}
                                 href={`/products/${card.id}`}
-                                className="flex items-center gap-2 p-2 bg-dark-800 border border-dark-600 hover:border-cyan-500/50 rounded-xl transition-all group"
+                                className="flex items-center gap-2.5 p-2.5 bg-dark-800 border border-dark-600 hover:border-cyan-500/50 rounded-xl transition-all group"
                               >
-                                <div className="w-12 h-12 flex-shrink-0 product-image-wrapper rounded-lg overflow-hidden">
+                                <div className="w-14 h-14 flex-shrink-0 bg-dark-700 rounded-lg overflow-hidden">
                                   <img
                                     src={card.image}
                                     alt={card.name}
                                     referrerPolicy="no-referrer"
                                     className="w-full h-full object-contain p-1"
                                     onError={(e) => {
-                                      (e.target as HTMLImageElement).src = 'https://placehold.co/48x48/1e293b/94a3b8?text=IMG';
+                                      (e.target as HTMLImageElement).src = `https://placehold.co/56x56/1e293b/94a3b8?text=${encodeURIComponent(card.category)}`;
                                     }}
                                   />
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-xs font-medium text-slate-200 group-hover:text-cyan-400 transition-colors line-clamp-1">
+                                  <p className="text-xs font-medium text-slate-200 group-hover:text-cyan-400 transition-colors line-clamp-2 leading-snug">
                                     {card.name}
                                   </p>
-                                  <p className="text-xs price-tag font-bold">
-                                    {new Intl.NumberFormat('vi-VN').format(card.price)} VND
+                                  <p className="text-xs price-tag font-bold mt-0.5">
+                                    {new Intl.NumberFormat('vi-VN').format(card.price)}đ
                                   </p>
                                 </div>
                                 <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-400 flex-shrink-0" />
