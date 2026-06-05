@@ -1,98 +1,71 @@
 'use client';
 
-import { useState } from 'react';
-import { Search, Filter, Eye, MoreHorizontal, Download } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Search, Filter, Eye, MoreHorizontal, Download, Loader2 } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 import { format } from 'date-fns';
 import { vi } from 'date-fns/locale';
-
-// Mock order data
-const MOCK_ORDERS = [
-  {
-    id: 'TS849201',
-    customer: { name: 'Nguyễn Văn A', phone: '0912345678', email: 'vana@example.com' },
-    date: '2024-05-15T10:30:00Z',
-    total: 32990000,
-    status: 'Đã giao',
-    paymentMethod: 'Chuyển khoản',
-    items: 2
-  },
-  {
-    id: 'TS849202',
-    customer: { name: 'Trần Thị B', phone: '0987654321', email: 'tranb@example.com' },
-    date: '2024-05-15T14:20:00Z',
-    total: 1590000,
-    status: 'Đang giao',
-    paymentMethod: 'COD',
-    items: 1
-  },
-  {
-    id: 'TS849203',
-    customer: { name: 'Lê Văn C', phone: '0909090909', email: 'levanc@example.com' },
-    date: '2024-05-16T09:15:00Z',
-    total: 14990000,
-    status: 'Chờ xác nhận',
-    paymentMethod: 'VNPay',
-    items: 1
-  },
-  {
-    id: 'TS849204',
-    customer: { name: 'Phạm Thị D', phone: '0933333333', email: 'phamd@example.com' },
-    date: '2024-05-16T11:45:00Z',
-    total: 3190000,
-    status: 'Đã hủy',
-    paymentMethod: 'MoMo',
-    items: 1
-  },
-  {
-    id: 'TS849205',
-    customer: { name: 'Hoàng Văn E', phone: '0944444444', email: 'hoange@example.com' },
-    date: '2024-05-17T08:00:00Z',
-    total: 79990000,
-    status: 'Đã giao',
-    paymentMethod: 'Chuyển khoản',
-    items: 3
-  },
-  {
-    id: 'TS849206',
-    customer: { name: 'Đỗ Thị F', phone: '0955555555', email: 'dotf@example.com' },
-    date: '2024-05-17T15:30:00Z',
-    total: 18490000,
-    status: 'Đang giao',
-    paymentMethod: 'COD',
-    items: 1
-  },
-  {
-    id: 'TS849207',
-    customer: { name: 'Ngô Văn G', phone: '0966666666', email: 'ngog@example.com' },
-    date: '2024-05-18T10:10:00Z',
-    total: 42990000,
-    status: 'Chờ xác nhận',
-    paymentMethod: 'Chuyển khoản',
-    items: 1
-  }
-];
+import toast from 'react-hot-toast';
 
 export default function AdminOrdersPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [orders, setOrders] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const filteredOrders = MOCK_ORDERS.filter(order => {
-    const matchesSearch = order.id.toLowerCase().includes(search.toLowerCase()) || 
-                          order.customer.name.toLowerCase().includes(search.toLowerCase()) ||
-                          order.customer.phone.includes(search);
-    const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch('/api/orders');
+      const data = await res.json();
+      if (data.success) {
+        setOrders(data.data);
+      }
+    } catch (error) {
+      toast.error('Lỗi khi tải danh sách đơn hàng');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const filteredOrders = orders.filter(order => {
+    const matchesSearch = order.orderNumber?.toLowerCase().includes(search.toLowerCase()) || 
+                          order.customer?.name?.toLowerCase().includes(search.toLowerCase()) ||
+                          order.customer?.phone?.includes(search);
+    const status = order.orderStatus || order.status || 'pending';
+    const matchesStatus = statusFilter === 'all' || status === statusFilter;
     
     return matchesSearch && matchesStatus;
   });
 
   const getStatusBadge = (status: string) => {
     switch (status) {
+      case 'delivered': return 'badge-green';
+      case 'shipped': return 'badge-cyan';
+      case 'processing': return 'badge-blue';
+      case 'pending': return 'badge-orange';
+      case 'cancelled': return 'badge-red';
+      // Fallback for mock data strings if any
       case 'Đã giao': return 'badge-green';
       case 'Đang giao': return 'badge-cyan';
       case 'Chờ xác nhận': return 'badge-orange';
       case 'Đã hủy': return 'badge-red';
       default: return 'badge-purple';
+    }
+  };
+
+  const translateStatus = (status: string) => {
+    switch (status) {
+      case 'delivered': return 'Đã giao';
+      case 'shipped': return 'Đang giao';
+      case 'processing': return 'Đang xử lý';
+      case 'pending': return 'Chờ xác nhận';
+      case 'cancelled': return 'Đã hủy';
+      default: return status;
     }
   };
 
@@ -153,34 +126,40 @@ export default function AdminOrdersPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredOrders.map(order => (
-                <tr key={order.id}>
+              {isLoading ? (
+                <tr>
+                  <td colSpan={8} className="text-center py-8">
+                    <Loader2 className="w-6 h-6 animate-spin mx-auto text-brand-500" />
+                  </td>
+                </tr>
+              ) : filteredOrders.map(order => (
+                <tr key={order._id || order.id}>
                   <td>
-                    <span className="font-mono text-cyan-400 font-semibold">{order.id}</span>
+                    <span className="font-mono text-cyan-400 font-semibold">{order.orderNumber || order.id}</span>
                   </td>
                   <td>
                     <div className="flex flex-col">
-                      <span className="text-sm font-medium text-slate-200">{order.customer.name}</span>
-                      <span className="text-xs text-slate-500">{order.customer.phone}</span>
+                      <span className="text-sm font-medium text-slate-200">{order.customer?.name}</span>
+                      <span className="text-xs text-slate-500">{order.customer?.phone}</span>
                     </div>
                   </td>
                   <td className="text-sm text-slate-400">
-                    {format(new Date(order.date), "dd/MM/yyyy HH:mm", { locale: vi })}
+                    {format(new Date(order.createdAt || order.date), "dd/MM/yyyy HH:mm", { locale: vi })}
                   </td>
                   <td className="text-center">
                     <span className="inline-block bg-dark-700 w-6 h-6 rounded-full text-xs leading-6 text-slate-300">
-                      {order.items}
+                      {Array.isArray(order.items) ? order.items.length : order.items}
                     </span>
                   </td>
                   <td>
-                    <span className="font-bold price-tag text-sm">{formatPrice(order.total)}</span>
+                    <span className="font-bold price-tag text-sm">{formatPrice(order.total || order.totalAmount || 0)}</span>
                   </td>
                   <td className="text-sm text-slate-400">
-                    {order.paymentMethod}
+                    {order.paymentMethod === 'cod' ? 'COD' : order.paymentMethod === 'bank' ? 'Chuyển khoản' : order.paymentMethod}
                   </td>
                   <td>
-                    <span className={`badge ${getStatusBadge(order.status)}`}>
-                      {order.status}
+                    <span className={`badge ${getStatusBadge(order.orderStatus || order.status || 'pending')}`}>
+                      {translateStatus(order.orderStatus || order.status || 'pending')}
                     </span>
                   </td>
                   <td>
@@ -198,7 +177,7 @@ export default function AdminOrdersPage() {
             </tbody>
           </table>
         </div>
-        {filteredOrders.length === 0 && (
+        {(!isLoading && filteredOrders.length === 0) && (
           <div className="p-8 text-center text-slate-500">
             Không tìm thấy đơn hàng nào phù hợp
           </div>
