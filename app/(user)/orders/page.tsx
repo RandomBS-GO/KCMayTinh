@@ -15,6 +15,8 @@ interface Order {
   totalAmount?: number;
   orderStatus: string;
   status?: string;
+  paymentMethod?: string;
+  paymentStatus?: string;
   items: any[];
   customer?: { name: string; email: string };
 }
@@ -23,19 +25,45 @@ export default function OrdersPage() {
   const { data: session, status } = useSession();
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isPaying, setIsPaying] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (status !== "authenticated" || !session?.user?.email) return;
-    setIsLoading(true);
+  const fetchUserOrders = () => {
+    if (!session?.user?.email) return;
     const email = encodeURIComponent(session.user.email);
     fetch(`/api/orders?email=${email}`)
       .then((res) => res.ok ? res.json() : null)
-      .then((responseData) => {
-        setOrders(responseData?.data || []);
-      })
+      .then((responseData) => setOrders(responseData?.data || []))
       .catch(() => toast.error("Không thể tải danh sách đơn hàng"))
       .finally(() => setIsLoading(false));
+  };
+
+  useEffect(() => {
+    if (status !== "authenticated") return;
+    setIsLoading(true);
+    fetchUserOrders();
   }, [status, session?.user?.email]);
+
+  const handlePayment = async (orderId: string) => {
+    setIsPaying(orderId);
+    try {
+      const res = await fetch(`/api/orders/${orderId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ paymentStatus: 'paid' })
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success('Thanh toán thành công!');
+        fetchUserOrders();
+      } else {
+        toast.error('Có lỗi xảy ra khi thanh toán.');
+      }
+    } catch (error) {
+      toast.error('Lỗi kết nối.');
+    } finally {
+      setIsPaying(null);
+    }
+  };
 
 
   if (status === "loading") {
@@ -107,11 +135,27 @@ export default function OrdersPage() {
                     {new Date(order.createdAt).toLocaleString("vi-VN")}
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-sm text-slate-400">Tổng tiền</div>
-                  <div className="text-xl font-bold text-brand-400">
-                    {formatPrice(order.total ?? order.totalAmount ?? 0)}
+                <div className="text-right flex flex-col items-end gap-3">
+                  <div>
+                    <div className="text-sm text-slate-400">Tổng tiền</div>
+                    <div className="text-xl font-bold text-brand-400">
+                      {formatPrice(order.total ?? order.totalAmount ?? 0)}
+                    </div>
                   </div>
+                  {order.paymentMethod !== 'cod' && order.paymentStatus === 'pending' && (
+                    <button 
+                      onClick={() => handlePayment(order._id)}
+                      disabled={isPaying === order._id}
+                      className="btn-primary py-1.5 px-4 text-sm"
+                    >
+                      {isPaying === order._id ? 'Đang xử lý...' : 'Thanh toán ngay'}
+                    </button>
+                  )}
+                  {order.paymentStatus === 'paid' && (
+                    <span className="text-xs font-medium text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-full border border-emerald-500/20">
+                      Đã thanh toán
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -119,7 +163,7 @@ export default function OrdersPage() {
                 {order.items.map((item: any, index: number) => (
                   <div key={index} className="flex items-center gap-4">
                     <div className="w-16 h-16 bg-dark-800 rounded-lg overflow-hidden flex-shrink-0 border border-dark-700">
-                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                      <img src={item.thumbnail || item.image} alt={item.name} className="w-full h-full object-cover" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <h4 className="text-slate-100 font-medium truncate">{item.name}</h4>

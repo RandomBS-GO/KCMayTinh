@@ -7,6 +7,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import { Order } from '@/models/Order';
 
+// In-memory orders for mock mode
+const mockOrders: unknown[] = [];
+
+const USE_MOCK = !process.env.MONGODB_URI || process.env.MONGODB_URI.includes('username:password');
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -54,13 +59,23 @@ export async function POST(request: NextRequest) {
       createdAt: new Date().toISOString(),
     };
 
-    // Trigger N8N webhook if configured
-    if (process.env.N8N_WEBHOOK_URL) {
-      fetch(process.env.N8N_WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ event: 'new_order', order: orderData }),
-      }).catch(() => {/* ignore N8N errors */});
+    if (USE_MOCK) {
+      mockOrders.push(orderData);
+
+      // Trigger N8N webhook if configured
+      if (process.env.N8N_WEBHOOK_URL) {
+        fetch(process.env.N8N_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ event: 'new_order', order: orderData }),
+        }).catch(() => {/* ignore N8N errors */ });
+      }
+
+      return NextResponse.json({
+        success: true,
+        data: orderData,
+        message: `Đặt hàng thành công! Mã đơn: ${orderNumber}`,
+      }, { status: 201 });
     }
 
     await connectDB();
@@ -86,12 +101,18 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const userEmail = searchParams.get('email');
 
+    if (USE_MOCK) {
+      const filtered = userEmail
+        ? mockOrders.filter((o: any) => o.customer?.email?.toLowerCase() === userEmail.toLowerCase())
+        : mockOrders;
+      return NextResponse.json({ success: true, data: filtered, total: filtered.length });
+    }
+
     await connectDB();
     const query = userEmail ? { 'customer.email': { $regex: new RegExp(`^${userEmail}$`, 'i') } } : {};
     const orders = await Order.find(query).sort({ createdAt: -1 }).limit(500).lean();
     return NextResponse.json({ success: true, data: orders, total: orders.length });
   } catch (error) {
-    console.error('Fetch orders error:', error);
     return NextResponse.json({ success: false, error: 'Lỗi khi tải đơn hàng' }, { status: 500 });
   }
 }
